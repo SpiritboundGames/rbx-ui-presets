@@ -13,13 +13,15 @@ export type Enum_ItemField = {
 
     export type Object_Base_ItemField = {
         BackFrame: Frame,
+        InnerFrame: Frame,
         ItemLabel: TextLabel
     };
 
     export type Schema_Base_ItemField = {
         __index: any,
 
-        newBase: () -> Base_ItemField
+        newBase: () -> Base_ItemField,
+        AddValue: (self: Base_ItemField,valueObj: GuiObject,posOverride: UDim2?) -> ()
     };
 
     export type Base_ItemField = Object_Base_ItemField & Schema_Base_ItemField;
