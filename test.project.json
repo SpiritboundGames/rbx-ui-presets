@@ -1,0 +1,17 @@
+{
+    "name": "ui-presets",
+    "servePort": 34874,
+    "tree": {
+        "$className": "DataModel",
+
+        "ReplicatedStorage": { 
+            "$className": "ReplicatedStorage",
+
+            "UIPresets": {
+                "$path": "src",
+
+                "Packages": { "$path": "Packages" }
+            }
+         }
+    }
+}
