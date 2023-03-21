@@ -30,7 +30,9 @@ export type Enum_ItemField = {
 
     -- #region TextField
   
-        export type Object_TextField = Object_Base_ItemField & {};
+        export type Object_TextField = Object_Base_ItemField & {
+            ValueField: TextBox
+        };
 
         export type Schema_TextField = Schema_Base_ItemField & {
             new: () -> TextField
