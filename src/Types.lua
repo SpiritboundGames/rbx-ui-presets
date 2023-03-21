@@ -11,7 +11,10 @@ export type Enum_ItemField = {
 
     -- #region Base_ItemField
 
-    export type Object_Base_ItemField = {};
+    export type Object_Base_ItemField = {
+        BackFrame: Frame,
+        ItemLabel: TextLabel
+    };
 
     export type Schema_Base_ItemField = {
         __index: any,
