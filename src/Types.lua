@@ -7,16 +7,48 @@ export type Enum_ItemField = {
 
 -- #endregion
 
--- #region ItemField
-export type Object_ItemField = {};
+-- #region ItemFields
 
-export type Schema_ItemField = {
-    __index: Schema_ItemField,
-    Field: Enum_ItemField,
+    -- #region Base_ItemField
 
-    new: (itemField: number) -> ItemField
-};
+    export type Object_Base_ItemField = {};
 
-export type ItemField = Object_ItemField & Schema_ItemField;
+    export type Schema_Base_ItemField = {
+        __index: any,
+
+        newBase: () -> Base_ItemField
+    };
+
+    export type Base_ItemField = Object_Base_ItemField & Schema_Base_ItemField;
+
+    -- #endregion
+
+    -- #region TextField
+  
+        export type Object_TextField = {};
+
+        export type Schema_TextField = {};
+
+        export type TextField = Object_TextField & Schema_TextField;
+
+    -- #endregion
+
+    -- #region EnumField
+
+        export type Object_EnumField = Object_Base_ItemField & {};
+
+        export type Schema_EnumField = Schema_Base_ItemField & {
+            __index: any,
+
+            new: () -> EnumField
+        };
+
+        export type EnumField = Object_EnumField & Schema_EnumField;
+
+    -- #endregion
+
 -- #endregion
+
+export type ItemField = TextField | EnumField
+
 return true;
