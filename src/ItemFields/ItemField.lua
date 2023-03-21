@@ -47,7 +47,7 @@ function ItemField.newBase() : ItemField
     return setmetatable(self,ItemField)::ItemField;
 end
 
-function ItemField.AddValue(self: ItemField,valueObj: GuiObject,posOverride: UDim2?)
+function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverride: UDim2?): ()
     valueObj.AnchorPoint = Vector2.new(1,0.5);
     valueObj.Position = posOverride or UDim2.new(1,0,0.5,0);
     valueObj.Parent = self.InnerFrame;
