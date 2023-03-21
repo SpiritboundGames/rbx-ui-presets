@@ -25,9 +25,11 @@ export type Enum_ItemField = {
 
     -- #region TextField
   
-        export type Object_TextField = {};
+        export type Object_TextField = Object_Base_ItemField & {};
 
-        export type Schema_TextField = {};
+        export type Schema_TextField = Schema_Base_ItemField & {
+            new: () -> TextField
+        };
 
         export type TextField = Object_TextField & Schema_TextField;
 
@@ -38,17 +40,26 @@ export type Enum_ItemField = {
         export type Object_EnumField = Object_Base_ItemField & {};
 
         export type Schema_EnumField = Schema_Base_ItemField & {
-            __index: any,
-
             new: () -> EnumField
         };
 
-        export type EnumField = Object_EnumField & Schema_EnumField;
+        export type EnumField = Object_TextField & Schema_EnumField;
 
     -- #endregion
 
 -- #endregion
 
-export type ItemField = TextField | EnumField
+export type PresetSchemas = {
+    ItemField: Schema_Base_ItemField,
+    TextField: Schema_TextField,
+    EnumField: Schema_EnumField
+};
+
+export type UIPresets = {
+    Preset: PresetSchemas,
+    Field: Enum_ItemField,
+
+    newField:<T> (itemField: number) -> T
+};
 
 return true;
