@@ -28,7 +28,9 @@ UIPresets.Field = Field;
 
 function UIPresets.newField<T>(itemField: number) : T
     if itemField == Field.TextField then
-        
+        return TextField.new();
+    elseif itemField == Field.EnumField then
+        return EnumField.new();
     end
 end
 
