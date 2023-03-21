@@ -10,7 +10,7 @@ EnumField.__index = EnumField;
 setmetatable(EnumField,ItemField);
 
 function EnumField.new() : EnumField
-    local self: any = ItemField.newBase();
+    local self = ItemField.newBase()::Types.Object_EnumField;
     
     return setmetatable(self,EnumField)::EnumField;
 end
