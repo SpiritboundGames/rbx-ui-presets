@@ -26,11 +26,11 @@ local Field: Types.Enum_ItemField = {
 
 UIPresets.Field = Field;
 
-function UIPresets.newField<T>(itemField: number) : T
+function UIPresets.newField<T>(itemField: number, ...: any) : T
     if itemField == Field.TextField then
         return TextField.new();
     elseif itemField == Field.EnumField then
-        return EnumField.new();
+        return EnumField.new(...);
     end
 end
 

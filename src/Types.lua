@@ -45,7 +45,7 @@ export type Enum_ItemField = {
         export type Object_EnumField = Object_Base_ItemField & {};
 
         export type Schema_EnumField = Schema_Base_ItemField & {
-            new: () -> EnumField
+            new: (enumDictionary: {[string]: number | string}) -> EnumField
         };
 
         export type EnumField = Object_TextField & Schema_EnumField;
@@ -64,7 +64,7 @@ export type UIPresets = {
     Preset: PresetSchemas,
     Field: Enum_ItemField,
 
-    newField:<T> (itemField: number) -> T
+    newField:<T> (itemField: number, any...) -> T
 };
 
 return true;

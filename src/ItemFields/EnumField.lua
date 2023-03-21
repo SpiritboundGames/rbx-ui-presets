@@ -9,9 +9,9 @@ local EnumField = {};
 EnumField.__index = EnumField;
 setmetatable(EnumField,ItemField);
 
-function EnumField.new() : EnumField
-    local self = ItemField.newBase()::Types.Object_EnumField;
-    
+function EnumField.new(enumDictionary: {[string]: number | string}) : EnumField
+    local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_EnumField;
+
     return setmetatable(self,EnumField)::EnumField;
 end
 
