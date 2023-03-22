@@ -48,7 +48,8 @@ export type Enum_ItemField = {
     -- #region DropdownField
 
         export type Object_DropdownField = Object_Base_ItemField & {
-            _orderedEnums: {string}
+            _orderedElements: {string},
+            _correlationDictionary: {[string]: number} | {[string]: number}
         };
 
         export type Schema_DropdownField = Schema_Base_ItemField & {

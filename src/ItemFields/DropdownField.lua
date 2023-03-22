@@ -24,9 +24,11 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
 
     local elementsType = GetTableType(dropdownElements)
     if elementsType == "array" then
-        self._orderedEnums = dropdownElements
+        self._orderedElements = dropdownElements;
+        self._correlationDictionary = {};
     elseif elementsType == "dictionary" then
-        self._orderedEnums = {}
+        self._orderedElements = {};
+        self._correlationDictionary = {};
 
         local usesNumericValuation = false;
         for k, v in pairs(dropdownElements) do
@@ -41,7 +43,6 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
 
         if usesNumericValuation then
             local zeroStart = false;
-
             for k, v in pairs(dropdownElements) do
                 if v == 0 then
                     zeroStart = true;
@@ -50,13 +51,15 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
             end
 
             for k, v in pairs(dropdownElements) do
-                local position = v
-                if zeroStart then position += 1 end
-                table.insert(self._orderedEnums, position, k)
+                local position = v;
+                if zeroStart then position += 1; end
+                table.insert(self._orderedElements, position, k);
+                self._correlationDictionary[k] = v
             end
         else
             for k, v in pairs(dropdownElements) do
-                table.insert(self._orderedEnums, k)
+                table.insert(self._orderedElements, k)
+                self._correlationDictionary[k] = v
             end
         end
     end
