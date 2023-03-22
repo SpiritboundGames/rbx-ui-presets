@@ -48,7 +48,7 @@ export type Enum_ItemField = {
         export type Object_EnumField = Object_Base_ItemField & {};
 
         export type Schema_EnumField = Schema_Base_ItemField & {
-            new: (enumDictionary: {[string]: number | string}) -> EnumField
+            new: (enumDictionary: {[string]: number | string}, defaultValue: number | string) -> EnumField
         };
 
         export type EnumField = Object_TextField & Schema_EnumField;
