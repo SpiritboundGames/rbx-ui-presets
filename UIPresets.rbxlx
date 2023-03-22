@@ -628,19 +628,19 @@ local ItemFieldsContainer: any = script.ItemFields;
 
 local ItemField: Types.Schema_Base_ItemField = require(ItemFieldsContainer:FindFirstChild("ItemField"));
 local TextField: Types.Schema_TextField = require(ItemFieldsContainer:FindFirstChild("TextField"));
-local EnumField: Types.Schema_EnumField = require(ItemFieldsContainer:FindFirstChild("EnumField"));
+local DropdownField: Types.Schema_DropdownField = require(ItemFieldsContainer:FindFirstChild("DropdownField"));
 
 local Preset: Types.PresetSchemas = {
     ItemField = ItemField,
     TextField = TextField,
-    EnumField = EnumField
+    DropdownField = DropdownField
 };
 
 UIPresets.Preset = Preset;
 
 local Field: Types.Enum_ItemField = {
     TextField = 0,
-    EnumField = 1
+    DropdownField = 1
 };
 
 UIPresets.Field = Field;
@@ -648,12 +648,10 @@ UIPresets.Field = Field;
 function UIPresets.newField<T>(itemField: number, ...: any) : T
     if itemField == Field.TextField then
         return TextField.new();
-    elseif itemField == Field.EnumField then
-        return EnumField.new(...);
+    elseif itemField == Field.DropdownField then
+        return DropdownField.new(...);
     end
 end
-
-local enumField: Types.EnumField = UIPresets.newField(Field.EnumField);
 
 return UIPresets;]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
@@ -745,7 +743,7 @@ local function createItemField() : (Frame,Frame,TextLabel)
     local BackFrame = Instance.new("Frame");
     BackFrame.Name = "BackFrame";
     BackFrame.AnchorPoint = Vector2.new(0.5, 0);
-    BackFrame.Size = UDim2.new(0.3, 0, 0.15, 0);
+    BackFrame.Size = UDim2.new(1, 0, 0.15, 0);
     BackFrame.BackgroundTransparency = 0.7;
     BackFrame.Position = UDim2.new(0.5, 0, 0, 0);
     BackFrame.BackgroundColor3 = Color3.fromRGB(58, 58, 58);
@@ -827,14 +825,23 @@ function TextField.new() : TextField
     valueField.Name = "ValueField";
     valueField.Size = UDim2.new(0.4,0,1,0);
     valueField.TextXAlignment = Enum.TextXAlignment.Center;
+    valueField.Text = "";
     valueField.PlaceholderText = "Placeholder";
-    valueField.Parent = self.InnerFrame;
     valueField.FocusLost:Connect(
         function(enterPressed: boolean, inputThatCausedFocusLoss: InputObject)
             self.Value = valueField.Text;
             self.ValueChanged:Fire(self.Value);
         end
     );
+    self.BackFrame.AncestryChanged:Connect(function(child: Instance, parent: Instance)
+        if not child == self.BackFrame then return; end
+        if parent and parent:IsA("GuiObject") then
+            local backgroundColour: Color3 = (parent::GuiObject).BackgroundColor3;
+            self.ItemLabel.BackgroundColor3 = backgroundColour;
+            valueField.BackgroundColor3 = backgroundColour;
+        end
+    end);
+    self:AddValue(valueField);
     self.ValueField = valueField;
     return setmetatable(self,TextField)::TextField;
 end
@@ -910,7 +917,7 @@ export type Enum_ItemField = {
             new: (dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) -> DropdownField
         };
 
-        export type DropdownField = Object_TextField & Schema_DropdownField;
+        export type DropdownField = Object_DropdownField & Schema_DropdownField;
 
     -- #endregion
 
@@ -956,7 +963,7 @@ local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextFi
 
 local PlayerGUI: PlayerGui = plr:WaitForChild("PlayerGui");
 
-local TestUI: ScreenGui = PlayerGUI:FindFirstChild("TestUI");
+local TestUI: ScreenGui = PlayerGUI:WaitForChild("TestUI");
 
 testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
@@ -1010,7 +1017,7 @@ testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("Scrolling
 				<bool name="Enabled">true</bool>
 				<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 				<string name="Name">TestUI</string>
-				<bool name="ResetOnSpawn">true</bool>
+				<bool name="ResetOnSpawn">false</bool>
 				<Ref name="RootLocalizationTable">null</Ref>
 				<token name="SafeAreaCompatibility">1</token>
 				<token name="ScreenInsets">2</token>
