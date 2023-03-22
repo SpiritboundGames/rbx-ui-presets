@@ -10,13 +10,13 @@ DropdownField.__index = DropdownField;
 setmetatable(DropdownField,ItemField);
 
 local function GetTableType(t: {[number]: any} | {[string]: any}): string
-	assert(type(t) == "table", "Supplied argument is not a table")
+	assert(type(t) == "table", "Supplied argument is not a table");
 	for i, _ in pairs(t) do
 		if type(i) ~= "number" then
-			return "dictionary"
+			return "dictionary";
 		end
 	end
-	return "array"
+	return "array";
 end
 
 function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) : DropdownField
@@ -28,13 +28,37 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
     elseif elementsType == "dictionary" then
         self._orderedEnums = {}
 
-        --[[for enumTitle, enumValue in pairs(enumDictionary) do
-            if typeof(enumValue) == "number" then
-                table.insert(self._orderedEnums, math.max(1, math.round(enumValue)), enumTitle)
-            elseif typeof(enumValue) == "string" then
-                table.insert(self._orderedEnums, #self._orderedEnums+1, enumTitle)
+        local usesNumericValuation = false;
+        for k, v in pairs(dropdownElements) do
+            if typeof(v) == "number" then
+                usesNumericValuation = true;
+                break;
+            elseif typeof(v) == "string" then
+                usesNumericValuation = false;
+                break;
             end
-        end]]
+        end
+
+        if usesNumericValuation then
+            local zeroStart = false;
+
+            for k, v in pairs(dropdownElements) do
+                if v == 0 then
+                    zeroStart = true;
+                    break;
+                end
+            end
+
+            for k, v in pairs(dropdownElements) do
+                local position = v
+                if zeroStart then position += 1 end
+                table.insert(self._orderedEnums, position, k)
+            end
+        else
+            for k, v in pairs(dropdownElements) do
+                table.insert(self._orderedEnums, k)
+            end
+        end
     end
 
     return setmetatable(self,DropdownField)::DropdownField;
