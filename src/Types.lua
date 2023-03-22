@@ -14,7 +14,8 @@ export type Enum_ItemField = {
     export type Object_Base_ItemField = {
         BackFrame: Frame,
         InnerFrame: Frame,
-        ItemLabel: TextLabel
+        ItemLabel: TextLabel,
+        ValueChanged: any
     };
 
     export type Schema_Base_ItemField = {
@@ -32,7 +33,8 @@ export type Enum_ItemField = {
     -- #region TextField
   
         export type Object_TextField = Object_Base_ItemField & {
-            ValueField: TextBox
+            ValueField: TextBox,
+            Value: string
         };
 
         export type Schema_TextField = Schema_Base_ItemField & {

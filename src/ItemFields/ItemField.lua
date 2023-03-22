@@ -5,6 +5,9 @@ type ItemField = Types.Base_ItemField;
 local ItemField = {} :: Types.Schema_Base_ItemField;
 ItemField.__index = ItemField;
 
+---@module Packages/GoodSignal
+local GoodSignal = require(game.ReplicatedStorage.Packages:FindFirstChild("GoodSignal"));
+
 local function createItemField() : (Frame,Frame,TextLabel)
     local BackFrame = Instance.new("Frame");
     BackFrame.Name = "BackFrame";
@@ -44,6 +47,7 @@ function ItemField.newBase() : ItemField
     self.BackFrame = backFrame;
     self.InnerFrame = innerFrame;
     self.ItemLabel = itemLabel;
+    self.ValueChanged = GoodSignal.new();
     return setmetatable(self,ItemField)::ItemField;
 end
 
