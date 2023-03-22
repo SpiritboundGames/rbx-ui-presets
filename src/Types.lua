@@ -2,7 +2,7 @@
 
 export type Enum_ItemField = {
     TextField: number,
-    EnumField: number
+    DropdownField: number
 };
 
 -- #endregion
@@ -43,15 +43,17 @@ export type Enum_ItemField = {
 
     -- #endregion
 
-    -- #region EnumField
+    -- #region DropdownField
 
-        export type Object_EnumField = Object_Base_ItemField & {};
-
-        export type Schema_EnumField = Schema_Base_ItemField & {
-            new: (enumDictionary: {[string]: number | string}, defaultValue: number | string) -> EnumField
+        export type Object_DropdownField = Object_Base_ItemField & {
+            _orderedEnums: {string}
         };
 
-        export type EnumField = Object_TextField & Schema_EnumField;
+        export type Schema_DropdownField = Schema_Base_ItemField & {
+            new: (dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) -> DropdownField
+        };
+
+        export type DropdownField = Object_TextField & Schema_DropdownField;
 
     -- #endregion
 
@@ -60,7 +62,7 @@ export type Enum_ItemField = {
 export type PresetSchemas = {
     ItemField: Schema_Base_ItemField,
     TextField: Schema_TextField,
-    EnumField: Schema_EnumField
+    DropdownField: Schema_DropdownField
 };
 
 export type UIPresets = {
