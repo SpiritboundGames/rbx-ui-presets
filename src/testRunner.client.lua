@@ -10,6 +10,6 @@ local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextFi
 
 local PlayerGUI: PlayerGui = plr:WaitForChild("PlayerGui");
 
-local TestUI: ScreenGui = PlayerGUI:FindFirstChild("TestUI");
+local TestUI: ScreenGui = PlayerGUI:WaitForChild("TestUI");
 
 testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));
