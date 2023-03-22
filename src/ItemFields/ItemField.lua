@@ -12,7 +12,7 @@ local function createItemField() : (Frame,Frame,TextLabel)
     local BackFrame = Instance.new("Frame");
     BackFrame.Name = "BackFrame";
     BackFrame.AnchorPoint = Vector2.new(0.5, 0);
-    BackFrame.Size = UDim2.new(0.3, 0, 0.15, 0);
+    BackFrame.Size = UDim2.new(1, 0, 0.15, 0);
     BackFrame.BackgroundTransparency = 0.7;
     BackFrame.Position = UDim2.new(0.5, 0, 0, 0);
     BackFrame.BackgroundColor3 = Color3.fromRGB(58, 58, 58);
