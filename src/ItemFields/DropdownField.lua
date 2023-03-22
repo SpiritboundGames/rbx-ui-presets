@@ -10,7 +10,7 @@ DropdownField.__index = DropdownField;
 setmetatable(DropdownField,ItemField);
 
 local function GetTableType(t: {[number]: any} | {[string]: any}): string
-	assert(type(t) == "table", "Supplied argument is not a table");
+	if typeof(t) ~= "table" then error("The value supplied was not a table.") end
 	for i, _ in pairs(t) do
 		if type(i) ~= "number" then
 			return "dictionary";
@@ -19,7 +19,7 @@ local function GetTableType(t: {[number]: any} | {[string]: any}): string
 	return "array";
 end
 
-function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) : DropdownField
+function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string | nil) : DropdownField
     local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_DropdownField;
 
     local elementsType = GetTableType(dropdownElements)
