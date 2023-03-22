@@ -9,19 +9,19 @@ local ItemFieldsContainer: any = script.ItemFields;
 
 local ItemField: Types.Schema_Base_ItemField = require(ItemFieldsContainer:FindFirstChild("ItemField"));
 local TextField: Types.Schema_TextField = require(ItemFieldsContainer:FindFirstChild("TextField"));
-local EnumField: Types.Schema_EnumField = require(ItemFieldsContainer:FindFirstChild("EnumField"));
+local DropdownField: Types.Schema_DropdownField = require(ItemFieldsContainer:FindFirstChild("DropdownField"));
 
 local Preset: Types.PresetSchemas = {
     ItemField = ItemField,
     TextField = TextField,
-    EnumField = EnumField
+    DropdownField = DropdownField
 };
 
 UIPresets.Preset = Preset;
 
 local Field: Types.Enum_ItemField = {
     TextField = 0,
-    EnumField = 1
+    DropdownField = 1
 };
 
 UIPresets.Field = Field;
@@ -29,11 +29,9 @@ UIPresets.Field = Field;
 function UIPresets.newField<T>(itemField: number, ...: any) : T
     if itemField == Field.TextField then
         return TextField.new();
-    elseif itemField == Field.EnumField then
-        return EnumField.new(...);
+    elseif itemField == Field.DropdownField then
+        return DropdownField.new(...);
     end
 end
-
-local enumField: Types.EnumField = UIPresets.newField(Field.EnumField);
 
 return UIPresets;
