@@ -1,7 +1,13 @@
+--!strict
 ---@module src/Types
 local Types = require(script.Parent.Parent.Types);
 type ItemField = Types.Base_ItemField;
 
+--[=[
+    @class ItemField
+
+    This class is the base class for all ItemFields
+]=]
 local ItemField = {} :: Types.Schema_Base_ItemField;
 ItemField.__index = ItemField;
 
@@ -42,6 +48,10 @@ local function createItemField() : (Frame,Frame,TextLabel)
     return BackFrame,InnerFrame,ItemLabel;
 end
 
+--[=[
+    @within ItemField
+    This creates a new base object of [ItemField] which contains the UI elements.
+]=]
 function ItemField.newBase() : ItemField
     local self = {}::Types.Object_Base_ItemField;
     local backFrame: Frame, innerFrame: Frame,itemLabel: TextLabel = createItemField();

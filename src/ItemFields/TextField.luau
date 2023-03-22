@@ -5,19 +5,28 @@ type TextField = Types.TextField;
 
 local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
 
+--[=[
+    @class TextField
+
+    This class is a derivitive of [ItemField] it contains an [ItemField.ValueField]
+    which contains a [TextBox] which stores a value in string representation.
+]=]
 local TextField = {};
 TextField.__index = TextField;
 setmetatable(TextField,ItemField);
 
-function TextField.new() : TextField
+function TextField.new(labelTitle: string,defaultValue: string,placeholder: string?) : TextField
     local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_TextField;
+    self.ItemLabel.Text = labelTitle or "Unnamed";
     local valueField: TextBox = Instance.new("TextBox");
     valueField.Name = "ValueField";
     valueField.Size = UDim2.new(0.4,0,1,0);
+    valueField.ClearTextOnFocus = false;
+    valueField.TextColor3 = Color3.fromRGB(255,255,255);
     valueField.BorderColor3 = Color3.fromRGB(106,106,106);
     valueField.TextXAlignment = Enum.TextXAlignment.Center;
-    valueField.Text = "";
-    valueField.PlaceholderText = "Placeholder";
+    valueField.Text = defaultValue or "";
+    valueField.PlaceholderText = placeholder or "Placeholder";
     valueField.FocusLost:Connect(
         function(enterPressed: boolean, inputThatCausedFocusLoss: InputObject)
             self.Value = valueField.Text;

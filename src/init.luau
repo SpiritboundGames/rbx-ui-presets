@@ -3,6 +3,11 @@
 ---@module src/Types
 local Types = require(script.Types);
 
+--[=[
+    @class UIPresets
+
+    This is the main class that should be used to create [ItemField] objects.
+]=]
 local UIPresets = {}::Types.UIPresets;
 
 local ItemFieldsContainer: any = script.ItemFields;
@@ -28,7 +33,7 @@ UIPresets.Field = Field;
 
 function UIPresets.newField<T>(itemField: number, ...: any) : T
     if itemField == Field.TextField then
-        return TextField.new();
+        return TextField.new(...);
     elseif itemField == Field.DropdownField then
         return DropdownField.new(...);
     end

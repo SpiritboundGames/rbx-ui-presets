@@ -38,7 +38,7 @@ export type Enum_ItemField = {
         };
 
         export type Schema_TextField = Schema_Base_ItemField & {
-            new: () -> TextField
+            new: (labelTitle: string,defaultValue: string,placeholder: string?) -> TextField
         };
 
         export type TextField = Object_TextField & Schema_TextField;
