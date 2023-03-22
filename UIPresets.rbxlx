@@ -610,6 +610,361 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 				<BinaryString name="Tags"></BinaryString>
 				<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002dbc</UniqueId>
 			</Properties>
+			<Item class="ModuleScript" referent="RBX92A496C971464919AB5813D762FDD69F">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">UIPresets</string>
+					<string name="ScriptGuid">{8C332D9D-2CFE-49F5-B459-3284719C0C00}</string>
+					<ProtectedString name="Source"><![CDATA[--!strict
+
+---@module src/Types
+local Types = require(script.Types);
+
+local UIPresets = {}::Types.UIPresets;
+
+local ItemFieldsContainer: any = script.ItemFields;
+
+local ItemField: Types.Schema_Base_ItemField = require(ItemFieldsContainer:FindFirstChild("ItemField"));
+local TextField: Types.Schema_TextField = require(ItemFieldsContainer:FindFirstChild("TextField"));
+local EnumField: Types.Schema_EnumField = require(ItemFieldsContainer:FindFirstChild("EnumField"));
+
+local Preset: Types.PresetSchemas = {
+    ItemField = ItemField,
+    TextField = TextField,
+    EnumField = EnumField
+};
+
+UIPresets.Preset = Preset;
+
+local Field: Types.Enum_ItemField = {
+    TextField = 0,
+    EnumField = 1
+};
+
+UIPresets.Field = Field;
+
+function UIPresets.newField<T>(itemField: number, ...: any) : T
+    if itemField == Field.TextField then
+        return TextField.new();
+    elseif itemField == Field.EnumField then
+        return EnumField.new(...);
+    end
+end
+
+local enumField: Types.EnumField = UIPresets.newField(Field.EnumField);
+
+return UIPresets;]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700005348</UniqueId>
+				</Properties>
+				<Item class="Folder" referent="RBX4ED0F7A8FD0941C78420C16366C7BA4F">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">ItemFields</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700005349</UniqueId>
+					</Properties>
+					<Item class="ModuleScript" referent="RBXF25D61A66F81422C875834E32667854E">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">DropdownField</string>
+							<string name="ScriptGuid">{1676AF05-CB86-4A94-9E7B-0D925BCF024E}</string>
+							<ProtectedString name="Source"><![CDATA[--!strict
+---@module src/Types
+local Types = require(script.Parent.Parent.Types);
+type DropdownField = Types.DropdownField;
+
+local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
+
+local DropdownField = {};
+DropdownField.__index = DropdownField;
+setmetatable(DropdownField,ItemField);
+
+local function GetTableType(t: {[number]: any} | {[string]: any}): string
+	assert(type(t) == "table", "Supplied argument is not a table")
+	for i, _ in pairs(t) do
+		if type(i) ~= "number" then
+			return "dictionary"
+		end
+	end
+	return "array"
+end
+
+function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) : DropdownField
+    local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_DropdownField;
+
+    local elementsType = GetTableType(dropdownElements)
+    if elementsType == "array" then
+        self._orderedEnums = dropdownElements
+    elseif elementsType == "dictionary" then
+        self._orderedEnums = {}
+
+        --[[for enumTitle, enumValue in pairs(enumDictionary) do
+            if typeof(enumValue) == "number" then
+                table.insert(self._orderedEnums, math.max(1, math.round(enumValue)), enumTitle)
+            elseif typeof(enumValue) == "string" then
+                table.insert(self._orderedEnums, #self._orderedEnums+1, enumTitle)
+            end
+        end]]
+    end
+
+    return setmetatable(self,DropdownField)::DropdownField;
+end
+
+return DropdownField;]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">6b3f4ae986c20515042bb4170000534a</UniqueId>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXC3165A1F70DC452E89D99740BEBADB26">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">ItemField</string>
+							<string name="ScriptGuid">{765C60C1-0D1D-4634-A5C5-8683679AB75C}</string>
+							<ProtectedString name="Source"><![CDATA[---@module src/Types
+local Types = require(script.Parent.Parent.Types);
+type ItemField = Types.Base_ItemField;
+
+local ItemField = {} :: Types.Schema_Base_ItemField;
+ItemField.__index = ItemField;
+
+---@module Packages/GoodSignal
+local GoodSignal = require(game.ReplicatedStorage.Packages:FindFirstChild("GoodSignal"));
+
+local function createItemField() : (Frame,Frame,TextLabel)
+    local BackFrame = Instance.new("Frame");
+    BackFrame.Name = "BackFrame";
+    BackFrame.AnchorPoint = Vector2.new(0.5, 0);
+    BackFrame.Size = UDim2.new(0.3, 0, 0.15, 0);
+    BackFrame.BackgroundTransparency = 0.7;
+    BackFrame.Position = UDim2.new(0.5, 0, 0, 0);
+    BackFrame.BackgroundColor3 = Color3.fromRGB(58, 58, 58);
+
+    local InnerFrame = Instance.new("Frame");
+    InnerFrame.Name = "InnerFrame";
+    InnerFrame.Size = UDim2.new(0.9, 0, 0.9, 0);
+    InnerFrame.BackgroundTransparency = 1;
+    InnerFrame.Position = UDim2.new(0.05, 0, 0.05, 0);
+    InnerFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+    InnerFrame.Parent = BackFrame;
+
+    local ItemLabel = Instance.new("TextLabel");
+    ItemLabel.Name = "ItemLabel";
+    ItemLabel.AnchorPoint = Vector2.new(0, 0.5);
+    ItemLabel.Size = UDim2.new(0.45, 0, 1, 0);
+    ItemLabel.Position = UDim2.new(0, 0, 0.5, 0);
+    ItemLabel.BackgroundColor3 = Color3.fromRGB(66, 66, 66);
+    ItemLabel.FontSize = Enum.FontSize.Size28;
+    ItemLabel.TextSize = 28;
+    ItemLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
+    ItemLabel.Text = "Placeholder";
+    ItemLabel.Font = Enum.Font.SourceSans;
+    ItemLabel.Parent = InnerFrame;
+
+    return BackFrame,InnerFrame,ItemLabel;
+end
+
+function ItemField.newBase() : ItemField
+    local self = {}::Types.Object_Base_ItemField;
+    local backFrame: Frame, innerFrame: Frame,itemLabel: TextLabel = createItemField();
+    self.BackFrame = backFrame;
+    self.InnerFrame = innerFrame;
+    self.ItemLabel = itemLabel;
+    self.ValueChanged = GoodSignal.new();
+    return setmetatable(self,ItemField)::ItemField;
+end
+
+function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverride: UDim2?): ()
+    valueObj.AnchorPoint = Vector2.new(1,0.5);
+    valueObj.Position = posOverride or UDim2.new(1,0,0.5,0);
+    valueObj.Parent = self.InnerFrame;
+end
+
+function ItemField.SetParent<T>(self: T | ItemField,parent: Instance)
+    if typeof(parent) ~= "Instance" or not parent:IsA("GuiObject") then
+        error("ItemField :SetParent requires the parent to be a valid GUIObject Instance.");
+    end
+    self.BackFrame.Parent = parent;
+end
+
+return ItemField;]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">6b3f4ae986c20515042bb4170000534b</UniqueId>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBX9895F77318FE45FD886C296B47DBA1CF">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">TextField</string>
+							<string name="ScriptGuid">{2216AA83-07E9-449D-A4A7-3EBC00B9892B}</string>
+							<ProtectedString name="Source"><![CDATA[--!strict
+---@module src/Types
+local Types = require(script.Parent.Parent.Types);
+type TextField = Types.TextField;
+
+local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
+
+local TextField = {};
+TextField.__index = TextField;
+setmetatable(TextField,ItemField);
+
+function TextField.new() : TextField
+    local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_TextField;
+    local valueField: TextBox = Instance.new("TextBox");
+    valueField.Name = "ValueField";
+    valueField.Size = UDim2.new(0.4,0,1,0);
+    valueField.TextXAlignment = Enum.TextXAlignment.Center;
+    valueField.PlaceholderText = "Placeholder";
+    valueField.Parent = self.InnerFrame;
+    valueField.FocusLost:Connect(
+        function(enterPressed: boolean, inputThatCausedFocusLoss: InputObject)
+            self.Value = valueField.Text;
+            self.ValueChanged:Fire(self.Value);
+        end
+    );
+    self.ValueField = valueField;
+    return setmetatable(self,TextField)::TextField;
+end
+
+return TextField;]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">6b3f4ae986c20515042bb4170000534c</UniqueId>
+						</Properties>
+					</Item>
+				</Item>
+				<Item class="ModuleScript" referent="RBX76DD595EE01C41E29C0AF41183398AB7">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">Types</string>
+						<string name="ScriptGuid">{AB7C8487-956F-4A9E-955D-54BA2AE35C23}</string>
+						<ProtectedString name="Source"><![CDATA[-- #region Enum_ItemFields
+
+export type Enum_ItemField = {
+    TextField: number,
+    DropdownField: number
+};
+
+-- #endregion
+
+-- #region ItemFields
+
+    -- #region Base_ItemField
+
+    export type Object_Base_ItemField = {
+        BackFrame: Frame,
+        InnerFrame: Frame,
+        ItemLabel: TextLabel,
+        ValueChanged: any
+    };
+
+    export type Schema_Base_ItemField = {
+        __index: any,
+
+        newBase: () -> Base_ItemField,
+        AddValue:<T> (self: T | Base_ItemField,valueObj: GuiObject,posOverride: UDim2?) -> (),
+        SetParent:<T> (self: T | Base_ItemField,parent: Instance) -> ()
+    };
+
+    export type Base_ItemField = Object_Base_ItemField & Schema_Base_ItemField;
+
+    -- #endregion
+
+    -- #region TextField
+  
+        export type Object_TextField = Object_Base_ItemField & {
+            ValueField: TextBox,
+            Value: string
+        };
+
+        export type Schema_TextField = Schema_Base_ItemField & {
+            new: () -> TextField
+        };
+
+        export type TextField = Object_TextField & Schema_TextField;
+
+    -- #endregion
+
+    -- #region DropdownField
+
+        export type Object_DropdownField = Object_Base_ItemField & {
+            _orderedEnums: {string}
+        };
+
+        export type Schema_DropdownField = Schema_Base_ItemField & {
+            new: (dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) -> DropdownField
+        };
+
+        export type DropdownField = Object_TextField & Schema_DropdownField;
+
+    -- #endregion
+
+-- #endregion
+
+export type PresetSchemas = {
+    ItemField: Schema_Base_ItemField,
+    TextField: Schema_TextField,
+    DropdownField: Schema_DropdownField
+};
+
+export type UIPresets = {
+    Preset: PresetSchemas,
+    Field: Enum_ItemField,
+
+    newField:<T> (itemField: number, ...any) -> T
+};
+
+return true;]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">6b3f4ae986c20515042bb4170000534d</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="LocalScript" referent="RBX2FAB69F88CF24516872FA81FEF6F15FA">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<bool name="Disabled">false</bool>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">testRunner</string>
+						<token name="RunContext">0</token>
+						<string name="ScriptGuid">{E22224F3-0BB2-44BB-AC73-62204C91D4F3}</string>
+						<ProtectedString name="Source"><![CDATA[print("Run")
+local plr: Player = game.Players.LocalPlayer;
+
+---@module src/Types
+local Types = require(script.Parent:FindFirstChild("Types"));
+
+local UIPresets: Types.UIPresets = require(script.Parent);
+
+local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextField);
+
+local PlayerGUI: PlayerGui = plr:WaitForChild("PlayerGui");
+
+local TestUI: ScreenGui = PlayerGUI:FindFirstChild("TestUI");
+
+testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">6b3f4ae986c20515042bb4170000534e</UniqueId>
+					</Properties>
+				</Item>
+			</Item>
 		</Item>
 		<Item class="StarterCharacterScripts" referent="RBX3903FDC2654947FE80D221F7D8F6A452">
 			<Properties>
@@ -654,7 +1009,7 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 				<int name="DisplayOrder">0</int>
 				<bool name="Enabled">true</bool>
 				<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-				<string name="Name">ScreenGui</string>
+				<string name="Name">TestUI</string>
 				<bool name="ResetOnSpawn">true</bool>
 				<Ref name="RootLocalizationTable">null</Ref>
 				<token name="SafeAreaCompatibility">1</token>
@@ -1473,291 +1828,18 @@ return Signal]]></ProtectedString>
 					</Item>
 				</Item>
 			</Item>
-			<Item class="ModuleScript" referent="5">
+			<Item class="ModuleScript" referent="RBXC3EC08CD443D4263BEFB7474B7694005">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 					<Content name="LinkedSource"><null></null></Content>
-					<string name="Name">goodsignal</string>
-					<string name="ScriptGuid">{0D945982-4FC6-4F79-9591-A473A55EFC9A}</string>
+					<string name="Name">GoodSignal</string>
+					<string name="ScriptGuid">{81AFF514-B6BC-486F-B996-B3BF521DFE28}</string>
 					<ProtectedString name="Source"><![CDATA[return require(script.Parent._Index["stravant_goodsignal@0.2.1"]["goodsignal"])
 ]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002db4</UniqueId>
-				</Properties>
-			</Item>
-		</Item>
-		<Item class="ModuleScript" referent="6">
-			<Properties>
-				<BinaryString name="AttributesSerialize"></BinaryString>
-				<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-				<Content name="LinkedSource"><null></null></Content>
-				<string name="Name">UIPresets</string>
-				<string name="ScriptGuid">{C06DD141-175F-4704-8C8B-1488E3365BD6}</string>
-				<ProtectedString name="Source"><![CDATA[--!strict
-
----@module src/Types
-local Types = require(script.Types);
-
-local UIPresets = {}::Types.UIPresets;
-
-local ItemFieldsContainer: any = script.ItemFields;
-
-local ItemField: Types.Schema_Base_ItemField = require(ItemFieldsContainer:FindFirstChild("ItemField"));
-local TextField: Types.Schema_TextField = require(ItemFieldsContainer:FindFirstChild("TextField"));
-local EnumField: Types.Schema_EnumField = require(ItemFieldsContainer:FindFirstChild("EnumField"));
-
-local Preset: Types.PresetSchemas = {
-    ItemField = ItemField,
-    TextField = TextField,
-    EnumField = EnumField
-};
-
-UIPresets.Preset = Preset;
-
-local Field: Types.Enum_ItemField = {
-    TextField = 0,
-    EnumField = 1
-};
-
-UIPresets.Field = Field;
-
-function UIPresets.newField<T>(itemField: number, ...: any) : T
-    if itemField == Field.TextField then
-        return TextField.new();
-    elseif itemField == Field.EnumField then
-        return EnumField.new(...);
-    end
-end
-
-local enumField: Types.EnumField = UIPresets.newField(Field.EnumField);
-
-return UIPresets;]]></ProtectedString>
-				<int64 name="SourceAssetId">-1</int64>
-				<BinaryString name="Tags"></BinaryString>
-				<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002db5</UniqueId>
-			</Properties>
-			<Item class="Folder" referent="7">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<string name="Name">ItemFields</string>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002db6</UniqueId>
-				</Properties>
-				<Item class="ModuleScript" referent="8">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">EnumField</string>
-						<string name="ScriptGuid">{BF8809B4-4021-4F91-908D-A726B6531F97}</string>
-						<ProtectedString name="Source"><![CDATA[--!strict
----@module src/Types
-local Types = require(script.Parent.Parent.Types);
-type EnumField = Types.EnumField;
-
-local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
-
-local EnumField = {};
-EnumField.__index = EnumField;
-setmetatable(EnumField,ItemField);
-
-function EnumField.new(enumDictionary: {[string]: number | string}) : EnumField
-    local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_EnumField;
-
-    return setmetatable(self,EnumField)::EnumField;
-end
-
-return EnumField;]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002db7</UniqueId>
-					</Properties>
-				</Item>
-				<Item class="ModuleScript" referent="9">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">ItemField</string>
-						<string name="ScriptGuid">{749564FA-3549-4493-BEA2-F70B774F8D2B}</string>
-						<ProtectedString name="Source"><![CDATA[---@module src/Types
-local Types = require(script.Parent.Parent.Types);
-type ItemField = Types.Base_ItemField;
-
-local ItemField = {} :: Types.Schema_Base_ItemField;
-ItemField.__index = ItemField;
-
-local function createItemField() : (Frame,Frame,TextLabel)
-    local BackFrame = Instance.new("Frame");
-    BackFrame.Name = "BackFrame";
-    BackFrame.AnchorPoint = Vector2.new(0.5, 0);
-    BackFrame.Size = UDim2.new(0.3, 0, 0.15, 0);
-    BackFrame.BackgroundTransparency = 0.7;
-    BackFrame.Position = UDim2.new(0.5, 0, 0, 0);
-    BackFrame.BackgroundColor3 = Color3.fromRGB(58, 58, 58);
-
-    local InnerFrame = Instance.new("Frame");
-    InnerFrame.Name = "InnerFrame";
-    InnerFrame.Size = UDim2.new(0.9, 0, 0.9, 0);
-    InnerFrame.BackgroundTransparency = 1;
-    InnerFrame.Position = UDim2.new(0.05, 0, 0.05, 0);
-    InnerFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-    InnerFrame.Parent = BackFrame;
-
-    local ItemLabel = Instance.new("TextLabel");
-    ItemLabel.Name = "ItemLabel";
-    ItemLabel.AnchorPoint = Vector2.new(0, 0.5);
-    ItemLabel.Size = UDim2.new(0.45, 0, 1, 0);
-    ItemLabel.Position = UDim2.new(0, 0, 0.5, 0);
-    ItemLabel.BackgroundColor3 = Color3.fromRGB(66, 66, 66);
-    ItemLabel.FontSize = Enum.FontSize.Size28;
-    ItemLabel.TextSize = 28;
-    ItemLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
-    ItemLabel.Text = "Placeholder";
-    ItemLabel.Font = Enum.Font.SourceSans;
-    ItemLabel.Parent = InnerFrame;
-
-    return BackFrame,InnerFrame,ItemLabel;
-end
-
-function ItemField.newBase() : ItemField
-    local self = {}::Types.Object_Base_ItemField;
-    local backFrame: Frame, innerFrame: Frame,itemLabel: TextLabel = createItemField();
-    self.BackFrame = backFrame;
-    self.InnerFrame = innerFrame;
-    self.ItemLabel = itemLabel;
-    return setmetatable(self,ItemField)::ItemField;
-end
-
-function ItemField.AddValue(self: ItemField,valueObj: GuiObject,posOverride: UDim2?)
-    valueObj.AnchorPoint = Vector2.new(1,0.5);
-    valueObj.Position = posOverride or UDim2.new(1,0,0.5,0);
-    valueObj.Parent = self.InnerFrame;
-end
-
-return ItemField;]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002db8</UniqueId>
-					</Properties>
-				</Item>
-				<Item class="ModuleScript" referent="10">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">TextField</string>
-						<string name="ScriptGuid">{124B311B-52EB-44D0-9018-695CAB89EC3E}</string>
-						<ProtectedString name="Source"><![CDATA[--!strict
----@module src/Types
-local Types = require(script.Parent.Parent.Types);
-type TextField = Types.TextField;
-
-local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
-
-local TextField = {};
-TextField.__index = TextField;
-setmetatable(TextField,ItemField);
-
-function TextField.new() : TextField
-    local self = ItemField.newBase()::Types.Object_TextField;
-    
-    return setmetatable(self,TextField)::TextField;
-end
-
-return TextField;]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002db9</UniqueId>
-					</Properties>
-				</Item>
-			</Item>
-			<Item class="ModuleScript" referent="11">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<Content name="LinkedSource"><null></null></Content>
-					<string name="Name">Types</string>
-					<string name="ScriptGuid">{392B613F-2703-4179-A813-BD4589269549}</string>
-					<ProtectedString name="Source"><![CDATA[-- #region Enum_ItemFields
-
-export type Enum_ItemField = {
-    TextField: number,
-    EnumField: number
-};
-
--- #endregion
-
--- #region ItemFields
-
-    -- #region Base_ItemField
-
-    export type Object_Base_ItemField = {
-        BackFrame: Frame,
-        InnerFrame: Frame,
-        ItemLabel: TextLabel
-    };
-
-    export type Schema_Base_ItemField = {
-        __index: any,
-
-        newBase: () -> Base_ItemField,
-        AddValue: (self: Base_ItemField,valueObj: GuiObject,posOverride: UDim2?) -> ()
-    };
-
-    export type Base_ItemField = Object_Base_ItemField & Schema_Base_ItemField;
-
-    -- #endregion
-
-    -- #region TextField
-  
-        export type Object_TextField = Object_Base_ItemField & {
-            ValueField: TextBox
-        };
-
-        export type Schema_TextField = Schema_Base_ItemField & {
-            new: () -> TextField
-        };
-
-        export type TextField = Object_TextField & Schema_TextField;
-
-    -- #endregion
-
-    -- #region EnumField
-
-        export type Object_EnumField = Object_Base_ItemField & {};
-
-        export type Schema_EnumField = Schema_Base_ItemField & {
-            new: (enumDictionary: {[string]: number | string}) -> EnumField
-        };
-
-        export type EnumField = Object_TextField & Schema_EnumField;
-
-    -- #endregion
-
--- #endregion
-
-export type PresetSchemas = {
-    ItemField: Schema_Base_ItemField,
-    TextField: Schema_TextField,
-    EnumField: Schema_EnumField
-};
-
-export type UIPresets = {
-    Preset: PresetSchemas,
-    Field: Enum_ItemField,
-
-    newField:<T> (itemField: number, any...) -> T
-};
-
-return true;]]></ProtectedString>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700002dba</UniqueId>
+					<UniqueId name="UniqueId">6b3f4ae986c20515042bb41700004df1</UniqueId>
 				</Properties>
 			</Item>
 		</Item>

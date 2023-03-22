@@ -55,7 +55,7 @@ export type Enum_ItemField = {
             new: (dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) -> DropdownField
         };
 
-        export type DropdownField = Object_TextField & Schema_DropdownField;
+        export type DropdownField = Object_DropdownField & Schema_DropdownField;
 
     -- #endregion
 
@@ -71,7 +71,7 @@ export type UIPresets = {
     Preset: PresetSchemas,
     Field: Enum_ItemField,
 
-    newField:<T> (itemField: number, any...) -> T
+    newField:<T> (itemField: number, ...any) -> T
 };
 
 return true;
