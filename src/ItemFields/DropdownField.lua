@@ -25,7 +25,6 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
     local elementsType = GetTableType(dropdownElements)
     if elementsType == "array" then
         self._orderedElements = dropdownElements;
-        self._correlationDictionary = {};
     elseif elementsType == "dictionary" then
         self._orderedElements = {};
         self._correlationDictionary = {};

@@ -49,7 +49,7 @@ export type Enum_ItemField = {
 
         export type Object_DropdownField = Object_Base_ItemField & {
             _orderedElements: {string},
-            _correlationDictionary: {[string]: number} | {[string]: number}
+            _correlationDictionary: {[string]: number} | {[string]: number} | nil
         };
 
         export type Schema_DropdownField = Schema_Base_ItemField & {

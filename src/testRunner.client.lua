@@ -9,5 +9,11 @@ local UIPresets: Types.UIPresets = require(script.Parent);
 local PlayerGUI: PlayerGui = plr:WaitForChild("PlayerGui");
 local TestUI: ScreenGui = PlayerGUI:WaitForChild("TestUI");
 
-local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextField);
-testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));
+--local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextField);
+--testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));
+
+local testDropdown: Types.DropdownField = UIPresets.newField(UIPresets.Field.DropdownField, {
+    Test = "TestValue",
+    AnotherTest = "AnotherTestValue"
+});
+testDropdown:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));
