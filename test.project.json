@@ -4,13 +4,20 @@
     "tree": {
         "$className": "DataModel",
 
-        "ReplicatedStorage": { 
+        "ReplicatedStorage": {
             "$className": "ReplicatedStorage",
+            
+            "Packages": { "$path": "Packages" } 
+        },
 
-            "UIPresets": {
-                "$path": "src"
-            },
-            "Packages": { "$path": "Packages" }
+        "StarterPlayer": { 
+            "$className": "StarterPlayer",
+
+            "StarterPlayerScripts": {
+                "$className": "StarterPlayerScripts",
+
+                "UIPresets": { "$path": "src" }
+            }
         }
     }
 }
