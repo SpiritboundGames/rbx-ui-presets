@@ -22,7 +22,7 @@ export type Enum_ItemField = {
 
         newBase: () -> Base_ItemField,
         AddValue:<T> (self: T | Base_ItemField,valueObj: GuiObject,posOverride: UDim2?) -> (),
-        SetParent: (self: Base_ItemField,parent: Instance) -> ()
+        SetParent:<T> (self: T | Base_ItemField,parent: Instance) -> ()
     };
 
     export type Base_ItemField = Object_Base_ItemField & Schema_Base_ItemField;
