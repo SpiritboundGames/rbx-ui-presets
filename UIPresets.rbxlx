@@ -686,31 +686,57 @@ DropdownField.__index = DropdownField;
 setmetatable(DropdownField,ItemField);
 
 local function GetTableType(t: {[number]: any} | {[string]: any}): string
-	assert(type(t) == "table", "Supplied argument is not a table")
+	if typeof(t) ~= "table" then error("The value supplied was not a table.") end
 	for i, _ in pairs(t) do
 		if type(i) ~= "number" then
-			return "dictionary"
+			return "dictionary";
 		end
 	end
-	return "array"
+	return "array";
 end
 
-function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string) : DropdownField
+function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[string]: string}, defaultValue: number | string | nil) : DropdownField
     local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_DropdownField;
 
     local elementsType = GetTableType(dropdownElements)
     if elementsType == "array" then
-        self._orderedEnums = dropdownElements
+        self._orderedElements = dropdownElements;
     elseif elementsType == "dictionary" then
-        self._orderedEnums = {}
+        self._orderedElements = {};
+        self._correlationDictionary = {};
 
-        --[[for enumTitle, enumValue in pairs(enumDictionary) do
-            if typeof(enumValue) == "number" then
-                table.insert(self._orderedEnums, math.max(1, math.round(enumValue)), enumTitle)
-            elseif typeof(enumValue) == "string" then
-                table.insert(self._orderedEnums, #self._orderedEnums+1, enumTitle)
+        local usesNumericValuation = false;
+        for k, v in pairs(dropdownElements) do
+            if typeof(v) == "number" then
+                usesNumericValuation = true;
+                break;
+            elseif typeof(v) == "string" then
+                usesNumericValuation = false;
+                break;
             end
-        end]]
+        end
+
+        if usesNumericValuation then
+            local zeroStart = false;
+            for k, v in pairs(dropdownElements) do
+                if v == 0 then
+                    zeroStart = true;
+                    break;
+                end
+            end
+
+            for k, v in pairs(dropdownElements) do
+                local position = v;
+                if zeroStart then position += 1; end
+                table.insert(self._orderedElements, position, k);
+                self._correlationDictionary[k] = v
+            end
+        else
+            for k, v in pairs(dropdownElements) do
+                table.insert(self._orderedElements, k)
+                self._correlationDictionary[k] = v
+            end
+        end
     end
 
     return setmetatable(self,DropdownField)::DropdownField;
@@ -762,8 +788,9 @@ local function createItemField() : (Frame,Frame,TextLabel)
     ItemLabel.Size = UDim2.new(0.45, 0, 1, 0);
     ItemLabel.Position = UDim2.new(0, 0, 0.5, 0);
     ItemLabel.BackgroundColor3 = Color3.fromRGB(66, 66, 66);
+    ItemLabel.BorderColor3 = Color3.fromRGB(106,106,106);
     ItemLabel.FontSize = Enum.FontSize.Size28;
-    ItemLabel.TextSize = 28;
+    ItemLabel.TextSize = 24;
     ItemLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
     ItemLabel.Text = "Placeholder";
     ItemLabel.Font = Enum.Font.SourceSans;
@@ -824,6 +851,7 @@ function TextField.new() : TextField
     local valueField: TextBox = Instance.new("TextBox");
     valueField.Name = "ValueField";
     valueField.Size = UDim2.new(0.4,0,1,0);
+    valueField.BorderColor3 = Color3.fromRGB(106,106,106);
     valueField.TextXAlignment = Enum.TextXAlignment.Center;
     valueField.Text = "";
     valueField.PlaceholderText = "Placeholder";
@@ -910,7 +938,8 @@ export type Enum_ItemField = {
     -- #region DropdownField
 
         export type Object_DropdownField = Object_Base_ItemField & {
-            _orderedEnums: {string}
+            _orderedElements: {string},
+            _correlationDictionary: {[string]: number} | {[string]: number} | nil
         };
 
         export type Schema_DropdownField = Schema_Base_ItemField & {
@@ -959,13 +988,17 @@ local Types = require(script.Parent:FindFirstChild("Types"));
 
 local UIPresets: Types.UIPresets = require(script.Parent);
 
-local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextField);
-
 local PlayerGUI: PlayerGui = plr:WaitForChild("PlayerGui");
-
 local TestUI: ScreenGui = PlayerGUI:WaitForChild("TestUI");
 
-testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));]]></ProtectedString>
+--local testTextField: Types.TextField = UIPresets.newField(UIPresets.Field.TextField);
+--testTextField:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));
+
+local testDropdown: Types.DropdownField = UIPresets.newField(UIPresets.Field.DropdownField, {
+    Test = "TestValue",
+    AnotherTest = "AnotherTestValue"
+});
+testDropdown:SetParent(TestUI:FindFirstChild("Frame"):FindFirstChild("ScrollingFrame"));]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 						<UniqueId name="UniqueId">6b3f4ae986c20515042bb4170000534e</UniqueId>
