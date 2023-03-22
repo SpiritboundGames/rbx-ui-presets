@@ -14,15 +14,25 @@ function TextField.new() : TextField
     local valueField: TextBox = Instance.new("TextBox");
     valueField.Name = "ValueField";
     valueField.Size = UDim2.new(0.4,0,1,0);
+    valueField.BorderColor3 = Color3.fromRGB(106,106,106);
     valueField.TextXAlignment = Enum.TextXAlignment.Center;
+    valueField.Text = "";
     valueField.PlaceholderText = "Placeholder";
-    valueField.Parent = self.InnerFrame;
     valueField.FocusLost:Connect(
         function(enterPressed: boolean, inputThatCausedFocusLoss: InputObject)
             self.Value = valueField.Text;
             self.ValueChanged:Fire(self.Value);
         end
     );
+    self.BackFrame.AncestryChanged:Connect(function(child: Instance, parent: Instance)
+        if not child == self.BackFrame then return; end
+        if parent and parent:IsA("GuiObject") then
+            local backgroundColour: Color3 = (parent::GuiObject).BackgroundColor3;
+            self.ItemLabel.BackgroundColor3 = backgroundColour;
+            valueField.BackgroundColor3 = backgroundColour;
+        end
+    end);
+    self:AddValue(valueField);
     self.ValueField = valueField;
     return setmetatable(self,TextField)::TextField;
 end
