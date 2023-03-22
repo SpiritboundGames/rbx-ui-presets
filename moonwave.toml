@@ -1,0 +1,9 @@
+gitSourceBranch = "main"
+changelog = true
+[footer]
+style = "dark"
+copyright = "© Copyright dev-syn,IrishFix 2023. Built with Moonwave and Docusaurus"
+[[classOrder]]
+section = "ItemFields"
+collapsed = false
+classes = ["ItemField","TextField"]
