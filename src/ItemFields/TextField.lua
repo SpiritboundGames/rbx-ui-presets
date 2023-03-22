@@ -14,6 +14,7 @@ function TextField.new() : TextField
     local valueField: TextBox = Instance.new("TextBox");
     valueField.Name = "ValueField";
     valueField.Size = UDim2.new(0.4,0,1,0);
+    valueField.BorderColor3 = Color3.fromRGB(106,106,106);
     valueField.TextXAlignment = Enum.TextXAlignment.Center;
     valueField.Text = "";
     valueField.PlaceholderText = "Placeholder";

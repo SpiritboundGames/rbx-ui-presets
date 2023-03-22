@@ -31,8 +31,9 @@ local function createItemField() : (Frame,Frame,TextLabel)
     ItemLabel.Size = UDim2.new(0.45, 0, 1, 0);
     ItemLabel.Position = UDim2.new(0, 0, 0.5, 0);
     ItemLabel.BackgroundColor3 = Color3.fromRGB(66, 66, 66);
+    ItemLabel.BorderColor3 = Color3.fromRGB(106,106,106);
     ItemLabel.FontSize = Enum.FontSize.Size28;
-    ItemLabel.TextSize = 28;
+    ItemLabel.TextSize = 24;
     ItemLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
     ItemLabel.Text = "Placeholder";
     ItemLabel.Font = Enum.Font.SourceSans;
