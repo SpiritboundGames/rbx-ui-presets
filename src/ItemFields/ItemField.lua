@@ -53,7 +53,7 @@ function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverr
     valueObj.Parent = self.InnerFrame;
 end
 
-function ItemField.SetParent(self: ItemField,parent: Instance)
+function ItemField.SetParent<T>(self: T | ItemField,parent: Instance)
     if typeof(parent) ~= "Instance" or not parent:IsA("GuiObject") then
         error("ItemField :SetParent requires the parent to be a valid GUIObject Instance.");
     end
