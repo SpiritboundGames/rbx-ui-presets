@@ -9,9 +9,6 @@ local TextField = {};
 TextField.__index = TextField;
 setmetatable(TextField,ItemField);
 
----@module Packages/GoodSignal
-local GoodSignal = require(game.ReplicatedStorage.Packages:FindFirstChild("GoodSignal"));
-
 function TextField.new() : TextField
     local self = ItemField.newBase()::Types.Schema_Base_ItemField & Types.Object_TextField;
     local valueField: TextBox = Instance.new("TextBox");
