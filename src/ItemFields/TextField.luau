@@ -60,4 +60,9 @@ function TextField.new(labelTitle: string,defaultValue: string,placeholder: stri
     return setmetatable(self,TextField)::TextField;
 end
 
+function TextField.Destroy(self: TextField)
+    self.ValueField:Destroy();
+    ItemField.Destroy(self);
+end
+
 return TextField;

@@ -113,4 +113,12 @@ function ItemField.SetParent<T>(self: T | ItemField,parent: GuiObject)
     self.BackFrame.Parent = parent;
 end
 
+function ItemField.Destroy<T>(self: T | ItemField)
+    self.ItemLabel:Destroy();
+    self.InnerFrame:Destroy();
+    self.BackFrame:Destroy();
+    self.ValueChanged:DisconnectAll();
+    self.ValueChanged = nil;
+end
+
 return ItemField;
