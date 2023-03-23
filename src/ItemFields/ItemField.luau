@@ -6,7 +6,7 @@ type ItemField = Types.Base_ItemField;
 --[=[
     @class ItemField
 
-    This class is the base class for all ItemFields
+    This class is the base class for all ItemFields.
 ]=]
 local ItemField = {} :: Types.Schema_Base_ItemField;
 ItemField.__index = ItemField;
@@ -66,7 +66,7 @@ function ItemField.newBase() : ItemField
         @prop InnerFrame Frame
         @within ItemField
 
-        This property is for maintaining the padding for the [ItemLabel]
+        This property is for maintaining the padding for the [ItemField.ItemLabel]
         and the ValueField objects.
     ]=]
     self.InnerFrame = innerFrame;
@@ -89,11 +89,10 @@ end
 
 --[=[
     @within ItemField
+    @param self T | ItemField -- The [ItemField] object or a derivative
 
     This method takes a ValueUI([GuiObject]) and positions it correctly
     to the value place and parents it to the [ItemField.InnerFrame].
-
-    @param self T | ItemField -- The [ItemField] object or a derivative
 ]=]
 function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverride: UDim2?): ()
     valueObj.AnchorPoint = Vector2.new(1,0.5);
@@ -103,10 +102,9 @@ end
 
 --[=[
     @within ItemField
+    @error invalid_type -- This method will error if the parent is not a GuiObject.
 
     This method sets the [ItemField.BackFrame] parent to the specified parent [GuiObject].
-
-    @error invalid_type -- This method will error if the parent is not a GuiObject
 ]=]
 function ItemField.SetParent<T>(self: T | ItemField,parent: GuiObject)
     if typeof(parent) ~= "Instance" or not parent:IsA("GuiObject") then
