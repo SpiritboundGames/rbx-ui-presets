@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[129],{63891:e=>{e.exports=JSON.parse('{"sourceUrl":"https://github.com/SpiritboundGames/rbx-ui-presets/blob/main","baseUrl":"/rbx-ui-presets/","classOrder":[{"section":"ItemFields","collapsed":false,"classes":["ItemField","TextField"]}],"apiCategories":[]}')}}]);
