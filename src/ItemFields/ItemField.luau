@@ -55,20 +55,60 @@ end
 function ItemField.newBase() : ItemField
     local self = {}::Types.Object_Base_ItemField;
     local backFrame: Frame, innerFrame: Frame,itemLabel: TextLabel = createItemField();
+    --[=[
+        @prop BackFrame Frame
+        @within ItemField
+
+        This property stores the back frame of all the UI elements for this ItemField.
+    ]=]
     self.BackFrame = backFrame;
+    --[=[
+        @prop InnerFrame Frame
+        @within ItemField
+
+        This property is for maintaining the padding for the [ItemLabel]
+        and the ValueField objects.
+    ]=]
     self.InnerFrame = innerFrame;
+    --[=[
+        @prop ItemLabel TextLabel
+        @within ItemField
+
+        This property is the label of the ValueField.
+    ]=]
     self.ItemLabel = itemLabel;
+    --[=[
+        @prop ValueChanged GoodSignal
+        @within ItemField
+
+        This property is an event that is fired when the value of the ValueField changes.
+    ]=]
     self.ValueChanged = GoodSignal.new();
     return setmetatable(self,ItemField)::ItemField;
 end
 
+--[=[
+    @within ItemField
+
+    This method takes a ValueUI([GuiObject]) and positions it correctly
+    to the value place and parents it to the [ItemField.InnerFrame].
+
+    @param self T | ItemField -- The [ItemField] object or a derivative
+]=]
 function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverride: UDim2?): ()
     valueObj.AnchorPoint = Vector2.new(1,0.5);
     valueObj.Position = posOverride or UDim2.new(1,0,0.5,0);
     valueObj.Parent = self.InnerFrame;
 end
 
-function ItemField.SetParent<T>(self: T | ItemField,parent: Instance)
+--[=[
+    @within ItemField
+
+    This method sets the [ItemField.BackFrame] parent to the specified parent [GuiObject].
+
+    @error invalid_type -- This method will error if the parent is not a GuiObject
+]=]
+function ItemField.SetParent<T>(self: T | ItemField,parent: GuiObject)
     if typeof(parent) ~= "Instance" or not parent:IsA("GuiObject") then
         error("ItemField :SetParent requires the parent to be a valid GUIObject Instance.");
     end
