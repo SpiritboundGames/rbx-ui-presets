@@ -2,6 +2,7 @@
 
 ---@module src/Types
 local Types = require(script.Types);
+export type Field = Types.Enum_ItemField;
 
 --[=[
     @class UIPresets
