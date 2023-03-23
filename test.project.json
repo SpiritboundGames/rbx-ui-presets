@@ -7,7 +7,8 @@
         "ReplicatedStorage": {
             "$className": "ReplicatedStorage",
             
-            "Packages": { "$path": "Packages" } 
+            "Packages": { "$path": "Packages" },
+            "DevPackages": { "$path": "DevPackages" }
         },
 
         "StarterPlayer": { 
