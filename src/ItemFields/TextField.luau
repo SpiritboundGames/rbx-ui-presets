@@ -9,7 +9,7 @@ local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
     @class TextField
 
     This class is a derivitive of [ItemField] it creates a [TextBox] which
-    is used to insert the value of this TextField. The value will always be a string
+    is used to insert the value of this [TextField]. The value will always be in string
     representation.
 ]=]
 local TextField = {};
@@ -60,6 +60,12 @@ function TextField.new(labelTitle: string,defaultValue: string,placeholder: stri
     return setmetatable(self,TextField)::TextField;
 end
 
+--[=[
+    @method Destroy
+    @within TextField
+
+    This method destroys the [TextField.ValueField] and calls the base [ItemField.Destroy].
+]=]
 function TextField.Destroy(self: TextField)
     self.ValueField:Destroy();
     ItemField.Destroy(self);

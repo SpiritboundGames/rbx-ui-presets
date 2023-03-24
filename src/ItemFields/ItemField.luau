@@ -88,8 +88,11 @@ function ItemField.newBase() : ItemField
 end
 
 --[=[
+    @method AddValue
     @within ItemField
     @param self T | ItemField -- The [ItemField] object or a derivative
+    @param valueObj GuiObject -- The [GuiObject] you wish to position correctly
+    @param posOverride UDim2? -- The position of the valueObj to override
 
     This method takes a ValueUI([GuiObject]) and positions it correctly
     to the value place and parents it to the [ItemField.InnerFrame].
@@ -101,6 +104,7 @@ function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverr
 end
 
 --[=[
+    @method SetParent
     @within ItemField
     @error invalid_type -- This method will error if the parent is not a GuiObject.
 
@@ -113,6 +117,13 @@ function ItemField.SetParent<T>(self: T | ItemField,parent: GuiObject)
     self.BackFrame.Parent = parent;
 end
 
+--[=[
+    @method Destroy
+    @within ItemField
+    @param self T | ItemField -- The base [ItemField] or a derivative
+
+    This method destroys the [ItemField] object and all of UI objects.
+]=]
 function ItemField.Destroy<T>(self: T | ItemField)
     self.ItemLabel:Destroy();
     self.InnerFrame:Destroy();
