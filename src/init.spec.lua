@@ -1,10 +1,9 @@
+local plr: Player = game.Players.LocalPlayer;
+
 return function()
 
-    ---@module src/Types
-    local Types = require(script.Parent:FindFirstChild("Types"));
-
     beforeAll(function(context)
-        context.Types = Types;
+        context.TestFrame = plr.PlayerGui:WaitForChild("TestUI"):WaitForChild("Frame"):WaitForChild("ScrollingFrame");
     end);
 
 end
