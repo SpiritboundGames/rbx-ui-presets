@@ -25,6 +25,12 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
     local elementsType = GetTableType(dropdownElements)
     if elementsType == "array" then
         self._orderedElements = dropdownElements;
+        self._currentIndex = table.find(self._orderedElements, defaultValue) or 1;
+        self._correlationDictionary = {};
+
+        for i, v in ipairs(self._orderedElements) do
+            self._correlationDictionary[v] = i;
+        end
     elseif elementsType == "dictionary" then
         self._orderedElements = {};
         self._correlationDictionary = {};
@@ -52,16 +58,23 @@ function DropdownField.new(dropdownElements: {string} | {[string]: number} | {[s
             for k, v in pairs(dropdownElements) do
                 local position = v;
                 if zeroStart then position += 1; end
+                if v == defaultValue then self._currentIndex = position; end
                 table.insert(self._orderedElements, position, k);
                 self._correlationDictionary[k] = v
             end
         else
             for k, v in pairs(dropdownElements) do
-                table.insert(self._orderedElements, k)
+                local position = #self._orderedElements+1
+                if v == defaultValue then self._currentIndex = position; end
+                table.insert(self._orderedElements, position, k)
                 self._correlationDictionary[k] = v
             end
         end
     end
+
+    self._currentIndex = self._currentIndex or 1
+
+    print(self)
 
     return setmetatable(self,DropdownField)::DropdownField;
 end
