@@ -8,8 +8,9 @@ local ItemField: Types.Schema_Base_ItemField = require(script.Parent.ItemField);
 --[=[
     @class TextField
 
-    This class is a derivitive of [ItemField] it contains an [ItemField.ValueField]
-    which contains a [TextBox] which stores a value in string representation.
+    This class is a derivitive of [ItemField] it creates a [TextBox] which
+    is used to insert the value of this TextField. The value will always be a string
+    representation.
 ]=]
 local TextField = {};
 TextField.__index = TextField;
@@ -42,8 +43,26 @@ function TextField.new(labelTitle: string,defaultValue: string,placeholder: stri
         end
     end);
     self:AddValue(valueField);
+    --[=[
+        @prop Value string
+        @within TextField
+
+        This property stores the value that is inserted into the [TextField.ValueField].
+    ]=]
+    --[=[
+        @prop ValueField TextBox
+        @within TextField
+
+        This property stores the [TextBox] which is used to
+        input values into this [TextField.InputField].
+    ]=]
     self.ValueField = valueField;
     return setmetatable(self,TextField)::TextField;
+end
+
+function TextField.Destroy(self: TextField)
+    self.ValueField:Destroy();
+    ItemField.Destroy(self);
 end
 
 return TextField;

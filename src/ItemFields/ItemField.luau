@@ -6,7 +6,7 @@ type ItemField = Types.Base_ItemField;
 --[=[
     @class ItemField
 
-    This class is the base class for all ItemFields
+    This class is the base class for all ItemFields.
 ]=]
 local ItemField = {} :: Types.Schema_Base_ItemField;
 ItemField.__index = ItemField;
@@ -55,24 +55,70 @@ end
 function ItemField.newBase() : ItemField
     local self = {}::Types.Object_Base_ItemField;
     local backFrame: Frame, innerFrame: Frame,itemLabel: TextLabel = createItemField();
+    --[=[
+        @prop BackFrame Frame
+        @within ItemField
+
+        This property stores the back frame of all the UI elements for this ItemField.
+    ]=]
     self.BackFrame = backFrame;
+    --[=[
+        @prop InnerFrame Frame
+        @within ItemField
+
+        This property is for maintaining the padding for the [ItemField.ItemLabel]
+        and the ValueField objects.
+    ]=]
     self.InnerFrame = innerFrame;
+    --[=[
+        @prop ItemLabel TextLabel
+        @within ItemField
+
+        This property is the label of the ValueField.
+    ]=]
     self.ItemLabel = itemLabel;
+    --[=[
+        @prop ValueChanged GoodSignal
+        @within ItemField
+
+        This property is an event that is fired when the value of the ValueField changes.
+    ]=]
     self.ValueChanged = GoodSignal.new();
     return setmetatable(self,ItemField)::ItemField;
 end
 
+--[=[
+    @within ItemField
+    @param self T | ItemField -- The [ItemField] object or a derivative
+
+    This method takes a ValueUI([GuiObject]) and positions it correctly
+    to the value place and parents it to the [ItemField.InnerFrame].
+]=]
 function ItemField.AddValue<T>(self: T | ItemField, valueObj: GuiObject,posOverride: UDim2?): ()
     valueObj.AnchorPoint = Vector2.new(1,0.5);
     valueObj.Position = posOverride or UDim2.new(1,0,0.5,0);
     valueObj.Parent = self.InnerFrame;
 end
 
-function ItemField.SetParent<T>(self: T | ItemField,parent: Instance)
+--[=[
+    @within ItemField
+    @error invalid_type -- This method will error if the parent is not a GuiObject.
+
+    This method sets the [ItemField.BackFrame] parent to the specified parent [GuiObject].
+]=]
+function ItemField.SetParent<T>(self: T | ItemField,parent: GuiObject)
     if typeof(parent) ~= "Instance" or not parent:IsA("GuiObject") then
         error("ItemField :SetParent requires the parent to be a valid GUIObject Instance.");
     end
     self.BackFrame.Parent = parent;
+end
+
+function ItemField.Destroy<T>(self: T | ItemField)
+    self.ItemLabel:Destroy();
+    self.InnerFrame:Destroy();
+    self.BackFrame:Destroy();
+    self.ValueChanged:DisconnectAll();
+    self.ValueChanged = nil;
 end
 
 return ItemField;

@@ -6,3 +6,6 @@
 /*.rbxl.lock
 
 .vscode/
+build/
+
+DevPackages/_Index
