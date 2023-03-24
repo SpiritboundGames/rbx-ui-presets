@@ -17,7 +17,8 @@
             "StarterPlayerScripts": {
                 "$className": "StarterPlayerScripts",
 
-                "UIPresets": { "$path": "src" }
+                "UIPresets": { "$path": "src" },
+                "testRunner": { "$path": "testRunner.client.luau" }
             }
         }
     }

@@ -67,7 +67,7 @@ UIPresets.Field = Field;
     @within UIPresets
 
     @param itemField Field -- The enum item in the [Field] enum-like table
-    @param ... any -- The tuple of arguments to send to the [ItemField] derivative
+    @param ... any -- The tuple of arguments to send to the [ItemField] derivative constructors
 ]=]
 function UIPresets.newField<T>(itemField: number, ...: any) : T
     if itemField == Field.TextField then
