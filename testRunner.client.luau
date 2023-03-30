@@ -1,5 +1,5 @@
 -- Run TestEZ tests
-local TestEZ = require(game.ReplicatedStorage.DevPackages.TestEZ);
+local TestEZ = require(script.Parent.DevPackages.TestEZ);
 TestEZ.TestBootstrap:run({script.Parent:FindFirstChild("UIPresets")});
 
 -- Run live test modules

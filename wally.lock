@@ -3,14 +3,14 @@
 registry = "test"
 
 [[package]]
-name = "dev-syn/ui-presets"
-version = "0.1.0"
-dependencies = [["GoodSignal", "stravant/goodsignal@0.2.1"]]
-
-[[package]]
 name = "roblox/testez"
 version = "0.4.1"
 dependencies = []
+
+[[package]]
+name = "spiritboundgames/ui-presets"
+version = "0.1.0"
+dependencies = [["GoodSignal", "stravant/goodsignal@0.2.1"]]
 
 [[package]]
 name = "stravant/goodsignal"
