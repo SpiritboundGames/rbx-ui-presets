@@ -12,7 +12,7 @@ local ItemField = {} :: Types.Schema_Base_ItemField;
 ItemField.__index = ItemField;
 
 ---@module Packages/GoodSignal
-local GoodSignal = require(game.ReplicatedStorage.Packages:FindFirstChild("GoodSignal"));
+local GoodSignal = require(script.Parent:FindFirstChild("GoodSignal"));
 
 local function createItemField() : (Frame,Frame,TextLabel)
     local BackFrame = Instance.new("Frame");
