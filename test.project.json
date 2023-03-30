@@ -12,7 +12,6 @@
 
                 "UIPresets": { 
                     "Packages": { "$path": "Packages" },
-                    "DevPackages": { "$path": "DevPackages" },
                     "testRunner": { "$path": "testRunner.client.luau" },
                     "$path": "src"
                 }

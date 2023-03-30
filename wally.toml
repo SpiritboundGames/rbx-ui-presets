@@ -6,7 +6,6 @@ realm = "shared"
 [place]
 shared-packages = "game.ReplicatedStorage.Packages"
 dev-packages = "game.ReplicatedStorage.Packages"
-[dev-dependencies]
-TestEZ = "roblox/testez@0.4.1"
 [dependencies]
+TestEZ = "roblox/testez@0.4.1"
 GoodSignal = "stravant/goodsignal@0.2.1"

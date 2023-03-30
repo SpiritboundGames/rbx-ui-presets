@@ -1,5 +1,5 @@
 -- Run TestEZ tests
-local TestEZ = require(script.Parent.DevPackages.TestEZ);
+local TestEZ = require(script.Parent.Packages.TestEZ);
 TestEZ.TestBootstrap:run({script.Parent:FindFirstChild("UIPresets")});
 
 -- Run live test modules
