@@ -11,8 +11,9 @@ type ItemField = Types.Base_ItemField;
 local ItemField = {} :: Types.Schema_Base_ItemField;
 ItemField.__index = ItemField;
 
+local UIPresetsModule: ModuleScript = script.Parent.Parent;
 ---@module Packages/GoodSignal
-local GoodSignal = require(script.Parent:FindFirstChild("GoodSignal"));
+local GoodSignal = require(UIPresetsModule.Parent:FindFirstChild("GoodSignal"));
 
 local function createItemField() : (Frame,Frame,TextLabel)
     local BackFrame = Instance.new("Frame");
