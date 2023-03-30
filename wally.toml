@@ -3,9 +3,6 @@ name = "spiritboundgames/ui-presets"
 version = "0.1.2"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
-[place]
-shared-packages = "game.ReplicatedStorage.Packages"
-dev-packages = "game.ReplicatedStorage.Packages"
 [dependencies]
 TestEZ = "roblox/testez@0.4.1"
 GoodSignal = "stravant/goodsignal@0.2.1"
