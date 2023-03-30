@@ -1,8 +1,5 @@
 {
     "name": "ui-presets",
     "globIgnorePaths": ["**/*.spec.lua"],
-    "tree": {
-        "Packages": { "$path": "Packages" },
-        "$path": "src" 
-    }
+    "tree": { "$path": "src" }
 }
