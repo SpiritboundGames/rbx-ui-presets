@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2023-03-30
+
+### Removed
+- The ItemField GoodSignal reference to point to the sibling of the `UIPresets` module.
+
 ## [0.1.1] - 2023-03-29
 
 ### Removed
